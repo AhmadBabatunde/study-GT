@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Production build output and Vite cache
+dist/
+.vite/
+
+# Local environment variables (keep example templates trackable)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+bun-debug.log*
+
+# Test output
+coverage/
+
+# Local editor and operating system files
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
