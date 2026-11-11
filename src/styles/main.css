@@ -610,7 +610,146 @@
   display: none;
 }
 
+.login-mobile-hero {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .login-mobile-hero {
+    position: relative;
+    display: block;
+    height: clamp(22rem, 55svh, 34rem);
+    overflow: hidden;
+    background: #131b2e;
+  }
+
+  .login-mobile-brand {
+    position: absolute;
+    z-index: 2;
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: 1.25rem;
+    left: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  }
+
+  .login-mobile-brand img {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .login-mobile-hero-image,
+  .login-mobile-hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .login-mobile-hero-image {
+    object-fit: cover;
+    object-position: center 38%;
+  }
+
+  .login-mobile-hero-overlay {
+    background: linear-gradient(90deg, rgba(10, 16, 30, 0.72), rgba(10, 16, 30, 0.08)),
+      linear-gradient(0deg, rgba(10, 16, 30, 0.45), transparent 70%);
+  }
+
+  .login-mobile-hero-copy {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    max-width: 22rem;
+    color: #fff;
+  }
+
+  .login-mobile-hero-copy h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  }
+
+  .login-mobile-hero-copy p {
+    max-width: 19rem;
+    margin: 0.45rem 0 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+}
+
 @media (max-width: 767px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-panel {
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding: 0 0 0.75rem;
+    border-left: 0;
+  }
+
+  .login-mobile-brand {
+    padding: 0;
+  }
+
+  .login-mobile-brand img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .login-mobile-hero {
+    height: clamp(22rem, 55svh, 34rem);
+  }
+
+  .login-mobile-hero-copy {
+    right: 1.1rem;
+    bottom: 1.1rem;
+    left: 1.1rem;
+  }
+
+  .login-mobile-hero-copy h2 {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+  }
+
+  .login-auth-box {
+    margin: 0 auto;
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .login-auth-box .login-welcome-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .login-auth-box h1 {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .login-auth-box #google-signin-btn,
+  .login-auth-box #demo-signin-btn {
+    min-height: 3rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .login-panel > footer {
+    margin: auto 1rem 0;
+    padding-top: 0.75rem;
+    font-size: 0.65rem;
+  }
+
   .workspace-header {
     height: 56px;
     flex-basis: 56px;
@@ -633,35 +772,112 @@
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 0.15rem;
-    padding: 0.45rem 0.25rem max(0.45rem, env(safe-area-inset-bottom));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.25rem;
+    padding: 0.5rem 0.35rem max(0.5rem, env(safe-area-inset-bottom));
     border-top: 1px solid rgba(199, 196, 216, 0.6);
     background: white;
     box-shadow: 0 -3px 12px rgba(19, 27, 46, 0.06);
   }
 
-  .workspace-mobile-nav a {
+  .workspace-mobile-nav > a,
+  .workspace-mobile-nav > button {
     min-width: 0;
+    min-height: 3.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    justify-content: center;
+    gap: 0.3rem;
     overflow: hidden;
     color: #464555;
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     font-weight: 600;
     text-decoration: none;
+    background: transparent;
+    border: 0;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .workspace-mobile-nav a span:last-child {
+  .workspace-mobile-nav > a .material-symbols-outlined,
+  .workspace-mobile-nav > button .material-symbols-outlined {
+    font-size: 1.35rem;
+  }
+
+  .workspace-mobile-nav > a span:last-child,
+  .workspace-mobile-nav > button span:last-child {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .workspace-mobile-nav .workspace-mobile-active {
+  .workspace-mobile-nav .workspace-mobile-active,
+  .workspace-mobile-nav > button[aria-expanded="true"] {
     color: #3525cd;
+    background: #f2f0ff;
+  }
+
+  .workspace-mobile-menu {
+    position: absolute;
+    right: 0.5rem;
+    bottom: calc(100% + 0.5rem);
+    width: min(18rem, calc(100vw - 1rem));
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.5rem;
+    border: 1px solid rgba(199, 196, 216, 0.7);
+    border-radius: 0.9rem;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(19, 27, 46, 0.16);
+  }
+
+  .workspace-mobile-menu.hidden {
+    display: none;
+  }
+
+  .workspace-mobile-menu > a,
+  .workspace-mobile-menu > button {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 0.75rem;
+    border: 0;
+    border-radius: 0.6rem;
+    background: transparent;
+    color: #29283a;
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .workspace-mobile-menu > a:hover,
+  .workspace-mobile-menu > button:hover {
+    background: #f4f3fa;
+  }
+
+  .workspace-mobile-menu > button {
+    color: #b42318;
+  }
+
+  .workspace-mobile-menu-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.65rem 0.75rem;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(199, 196, 216, 0.5);
+    margin-bottom: 0.2rem;
+  }
+
+  .workspace-mobile-menu-heading > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

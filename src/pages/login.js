@@ -11,7 +11,7 @@ import { api } from '../api.js';
 
 export async function renderLoginPage(appEl, { navigate }) {
   appEl.innerHTML = `
-    <div class="min-h-screen w-full flex bg-surface antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary">
+    <div class="login-page min-h-screen w-full flex bg-surface antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary">
       <!-- Left Side Panel: Image Showcase (visible on lg screens and up) -->
       <div class="hidden lg:relative lg:flex lg:w-1/2 xl:w-7/12 bg-surface-container-lowest overflow-hidden select-none">
         <img
@@ -37,33 +37,32 @@ export async function renderLoginPage(appEl, { navigate }) {
       </div>
 
       <!-- Right Side Panel: Clean Authentication Container -->
-      <div class="w-full lg:w-1/2 xl:w-5/12 min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-14 bg-surface-container-lowest border-l border-outline-variant/30">
-        <!-- Compact mobile image banner -->
-        <div class="lg:hidden relative h-32 sm:h-40 w-full overflow-hidden rounded-xl mb-5">
-          <img
-            src="/login_page_image.jpg"
-            alt="Study GT Graduate Trainee Preparation"
-            class="absolute inset-0 w-full h-full object-cover object-center"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        </div>
-
-        <!-- Mobile/Tablet Top Brand (hidden on desktop since left side displays it) -->
-        <div class="flex items-center justify-between lg:hidden mb-6">
-          <div class="flex items-center gap-3">
+      <div class="login-panel w-full lg:w-1/2 xl:w-5/12 min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-14 bg-surface-container-lowest border-l border-outline-variant/30">
+        <section class="login-mobile-hero" aria-label="Study GT aptitude test preparation">
+          <div class="login-mobile-brand flex items-center lg:hidden">
             <img
               src="/study-gt-logo.png"
               alt="Study GT Logo"
               class="h-9 w-9 object-contain rounded-lg shadow-xs ring-1 ring-outline-variant/20"
             />
-            <span class="text-headline-md font-headline-md font-extrabold tracking-tight text-primary">
+            <span class="text-headline-md font-headline-md font-extrabold tracking-tight">
               Study GT
             </span>
           </div>
-        </div>
+          <img
+            src="/login_mobile_image.png"
+            alt=""
+            class="login-mobile-hero-image"
+          />
+          <div class="login-mobile-hero-overlay"></div>
+          <div class="login-mobile-hero-copy">
+            <h2>Get Job-Ready.<br />Master Your Aptitude.</h2>
+            <p>The #1 practice platform for Graduate Trainee &amp; Top-Firm Assessments in Nigeria.</p>
+          </div>
+        </section>
 
         <!-- Center Auth Box -->
-        <div class="my-auto max-w-sm w-full mx-auto py-6">
+        <div class="login-auth-box my-auto max-w-sm w-full mx-auto py-6">
           <!-- Desktop Brand Header -->
           <div class="hidden lg:flex items-center gap-3 mb-8">
             <img
@@ -77,7 +76,7 @@ export async function renderLoginPage(appEl, { navigate }) {
           </div>
 
           <!-- Welcome Headline -->
-          <div class="mb-8">
+          <div class="login-welcome-header mb-8">
             <h1 class="text-headline-lg font-headline-lg font-extrabold text-on-surface tracking-tight leading-tight">
               Sign in to your account
             </h1>

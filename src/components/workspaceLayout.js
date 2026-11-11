@@ -41,6 +41,20 @@ function closeProfilePopupOnOutsideClick(event) {
   if (popup && trigger && !popup.contains(event.target) && !trigger.contains(event.target)) {
     popup.classList.add('hidden');
   }
+
+  const mobileMenus = [
+    document.getElementById('mobile-profile-menu'),
+    document.getElementById('mobile-more-menu'),
+  ].filter(Boolean);
+  const mobileTriggers = [
+    document.getElementById('mobile-profile-trigger'),
+    document.getElementById('mobile-more-trigger'),
+  ].filter(Boolean);
+  if (!mobileMenus.some((menu) => menu.contains(event.target))
+      && !mobileTriggers.some((mobileTrigger) => mobileTrigger.contains(event.target))) {
+    mobileMenus.forEach((menu) => menu.classList.add('hidden'));
+    mobileTriggers.forEach((mobileTrigger) => mobileTrigger.setAttribute('aria-expanded', 'false'));
+  }
 }
 
 function updateStudyStreakElements() {
@@ -286,26 +300,54 @@ export function renderWorkspaceLayout({ user, streak, activePath, content }) {
 
       <!-- Mobile Bottom Navigation Bar -->
       <nav aria-label="Mobile navigation" class="workspace-mobile-nav">
-        ${navigationItems.map((item) => `
-          <a
-            href="#${item.path}"
-            aria-label="${item.label}"
-            title="${item.label}"
-            class="${item.path === activePath ? 'workspace-mobile-active' : ''}"
-          >
-            <span class="material-symbols-outlined text-xl">${item.icon}</span>
-            <span>${item.label.replace('Performance ', '').replace(' Questions', '').replace('Community ', '')}</span>
-          </a>
-        `).join('')}
-        <a
-          href="#/settings"
+        <a href="#/dashboard" aria-label="Dashboard" class="${activePath === '/dashboard' ? 'workspace-mobile-active' : ''}">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#/practice" aria-label="Practice" class="${activePath.startsWith('/practice') ? 'workspace-mobile-active' : ''}">
+          <span class="material-symbols-outlined">quiz</span>
+          <span>Practice</span>
+        </a>
+        <a href="#/mocks" aria-label="Mock Exams" class="${activePath === '/mocks' ? 'workspace-mobile-active' : ''}">
+          <span class="material-symbols-outlined">assignment</span>
+          <span>Exams</span>
+        </a>
+        <button
+          id="mobile-profile-trigger"
+          type="button"
           aria-label="Candidate profile"
-          title="Candidate profile"
+          aria-controls="mobile-profile-menu"
+          aria-expanded="false"
           class="${activePath === '/settings' ? 'workspace-mobile-active' : ''}"
         >
-          <span class="material-symbols-outlined text-xl">account_circle</span>
+          <span class="material-symbols-outlined">account_circle</span>
           <span>Profile</span>
-        </a>
+        </button>
+        <button
+          id="mobile-more-trigger"
+          type="button"
+          aria-label="More navigation"
+          aria-controls="mobile-more-menu"
+          aria-expanded="false"
+        >
+          <span class="material-symbols-outlined">menu</span>
+          <span>More</span>
+        </button>
+        <div id="mobile-profile-menu" class="workspace-mobile-menu hidden" role="menu">
+          <div class="workspace-mobile-menu-heading">
+            <span class="font-semibold">${fullName}</span>
+            <span class="text-xs text-on-surface-variant">${escapeHtml(user.email || 'candidate@studygt.ng')}</span>
+          </div>
+          <a href="#/settings" role="menuitem">Candidate settings</a>
+          <a href="#/bookmarks" role="menuitem">Bookmarks</a>
+          <a href="#/support" role="menuitem">Support</a>
+          <button id="mobile-logout-btn" type="button" role="menuitem">Log out</button>
+        </div>
+        <div id="mobile-more-menu" class="workspace-mobile-menu hidden" role="menu">
+          <a href="#/employer-prep" role="menuitem">Employer Prep</a>
+          <a href="#/analytics" role="menuitem">Performance Analytics</a>
+          <a href="#/feedback" role="menuitem">Community Feedback</a>
+        </div>
       </nav>
     </div>
   `;
@@ -373,5 +415,38 @@ export function bindWorkspaceLayout(appEl, { auth, navigate }) {
 
   if (popupLogout) {
     popupLogout.addEventListener('click', () => auth.logout());
+  }
+
+  const mobileProfileTrigger = appEl.querySelector('#mobile-profile-trigger');
+  const mobileProfileMenu = appEl.querySelector('#mobile-profile-menu');
+  const mobileMoreTrigger = appEl.querySelector('#mobile-more-trigger');
+  const mobileMoreMenu = appEl.querySelector('#mobile-more-menu');
+  const mobileLogout = appEl.querySelector('#mobile-logout-btn');
+  const mobileMenus = [mobileProfileMenu, mobileMoreMenu].filter(Boolean);
+  const mobileTriggers = [mobileProfileTrigger, mobileMoreTrigger].filter(Boolean);
+
+  const closeMobileMenus = () => {
+    mobileMenus.forEach((menu) => menu.classList.add('hidden'));
+    mobileTriggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+  };
+  const toggleMobileMenu = (trigger, menu) => {
+    const shouldOpen = menu.classList.contains('hidden');
+    closeMobileMenus();
+    if (shouldOpen) {
+      menu.classList.remove('hidden');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  if (mobileProfileTrigger && mobileProfileMenu) {
+    mobileProfileTrigger.addEventListener('click', () => toggleMobileMenu(mobileProfileTrigger, mobileProfileMenu));
+    mobileProfileMenu.querySelectorAll('a').forEach((item) => item.addEventListener('click', closeMobileMenus));
+  }
+  if (mobileMoreTrigger && mobileMoreMenu) {
+    mobileMoreTrigger.addEventListener('click', () => toggleMobileMenu(mobileMoreTrigger, mobileMoreMenu));
+    mobileMoreMenu.querySelectorAll('a').forEach((item) => item.addEventListener('click', closeMobileMenus));
+  }
+  if (mobileLogout) {
+    mobileLogout.addEventListener('click', () => auth.logout());
   }
 }
