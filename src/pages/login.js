@@ -38,6 +38,16 @@ export async function renderLoginPage(appEl, { navigate }) {
 
       <!-- Right Side Panel: Clean Authentication Container -->
       <div class="w-full lg:w-1/2 xl:w-5/12 min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-14 bg-surface-container-lowest border-l border-outline-variant/30">
+        <!-- Compact mobile image banner -->
+        <div class="lg:hidden relative h-32 sm:h-40 w-full overflow-hidden rounded-xl mb-5">
+          <img
+            src="/login_page_image.jpg"
+            alt="Study GT Graduate Trainee Preparation"
+            class="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+
         <!-- Mobile/Tablet Top Brand (hidden on desktop since left side displays it) -->
         <div class="flex items-center justify-between lg:hidden mb-6">
           <div class="flex items-center gap-3">

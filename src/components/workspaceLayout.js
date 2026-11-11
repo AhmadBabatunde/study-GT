@@ -297,6 +297,15 @@ export function renderWorkspaceLayout({ user, streak, activePath, content }) {
             <span>${item.label.replace('Performance ', '').replace(' Questions', '').replace('Community ', '')}</span>
           </a>
         `).join('')}
+        <a
+          href="#/settings"
+          aria-label="Candidate profile"
+          title="Candidate profile"
+          class="${activePath === '/settings' ? 'workspace-mobile-active' : ''}"
+        >
+          <span class="material-symbols-outlined text-xl">account_circle</span>
+          <span>Profile</span>
+        </a>
       </nav>
     </div>
   `;
