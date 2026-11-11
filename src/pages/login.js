@@ -145,6 +145,7 @@ export async function renderLoginPage(appEl, { navigate }) {
     errorDiv.textContent = msg;
     errorDiv.classList.remove('hidden');
   };
+  const clearError = () => errorDiv.classList.add('hidden');
 
   const demoBtn = appEl.querySelector('#demo-signin-btn');
   demoBtn.addEventListener('click', async () => {
@@ -167,27 +168,86 @@ export async function renderLoginPage(appEl, { navigate }) {
   });
 
   const googleBtn = appEl.querySelector('#google-signin-btn');
-  googleBtn.addEventListener('click', async () => {
-    let clientId = window.GOOGLE_CLIENT_ID;
+  const googleBtnHtml = googleBtn.innerHTML;
+  let googleClientId = window.GOOGLE_CLIENT_ID || '';
+  let googleConfigReady = Boolean(googleClientId);
+  let googleConfigLoading = false;
+  let googleConfigError = null;
+  let googleSignInInProgress = false;
+
+  const setGoogleButtonBusy = (message) => {
+    googleBtn.disabled = true;
+    googleBtn.classList.add('opacity-60', 'cursor-wait');
+    googleBtn.innerHTML = `
+      <span class="animate-spin material-symbols-outlined text-lg">progress_activity</span>
+      <span class="font-medium">${message}</span>
+    `;
+  };
+  const resetGoogleButton = () => {
+    googleBtn.disabled = false;
+    googleBtn.classList.remove('opacity-60', 'cursor-wait');
+    googleBtn.innerHTML = googleBtnHtml;
+    googleSignInInProgress = false;
+  };
+  const prepareGoogleConfig = async () => {
+    if (googleConfigLoading) return;
+    googleConfigLoading = true;
+    googleConfigError = null;
+    setGoogleButtonBusy('Preparing Google sign-in…');
     try {
       const cfg = await api.getAuthConfig();
       if (cfg && cfg.google_client_id) {
-        clientId = cfg.google_client_id;
+        googleClientId = cfg.google_client_id;
       }
-    } catch {}
+      if (!googleClientId) {
+        throw new Error('Google Sign-In is not configured on the backend.');
+      }
+      googleConfigReady = true;
+      clearError();
+    } catch (err) {
+      googleConfigError = err;
+      showError(`Could not prepare Google Sign-In: ${err.message}. Tap the Google button to retry.`);
+    } finally {
+      googleConfigLoading = false;
+      if (!googleSignInInProgress) resetGoogleButton();
+    }
+  };
+
+  if (!googleConfigReady) {
+    void prepareGoogleConfig();
+  }
+
+  googleBtn.addEventListener('click', () => {
+    if (!googleConfigReady) {
+      if (!googleConfigLoading) {
+        void prepareGoogleConfig();
+      }
+      return;
+    }
+    if (googleSignInInProgress) return;
 
     const client = auth.initGoogleAuthCodeFlow({
-      clientId: clientId || 'your-client-id.apps.googleusercontent.com',
+      clientId: googleClientId,
       onSuccess: () => navigate('/dashboard'),
+      onCodeReceived: () => setGoogleButtonBusy('Completing sign-in…'),
       onError: (err) => {
+        resetGoogleButton();
         showError(`Google Sign-In: ${err.message}. If not configured yet, use Demo Sign-In above.`);
       },
     });
 
-    if (client && clientId) {
-      client.requestCode();
+    if (client) {
+      googleSignInInProgress = true;
+      setGoogleButtonBusy('Continue in Google…');
+      try {
+        client.requestCode();
+      } catch (err) {
+        resetGoogleButton();
+        showError(`Google Sign-In could not open: ${err.message}`);
+      }
     } else {
-      showError('Google OAuth is not configured on this environment. Please click "Launch Demo Candidate Profile" above.');
+      resetGoogleButton();
+      showError('Google Sign-In could not start. Please try again or use Demo Sign-In.');
     }
   });
 

@@ -57,7 +57,7 @@ class AuthManager {
    * "postmessage" — we must pass that exact string to the backend so it can
    * complete the server-side token exchange correctly.
    */
-  initGoogleAuthCodeFlow({ clientId, onSuccess, onError }) {
+  initGoogleAuthCodeFlow({ clientId, onSuccess, onError, onCodeReceived }) {
     if (!window.google || !window.google.accounts || !window.google.accounts.oauth2) {
       console.warn('Google Identity Services SDK not yet loaded.');
       if (onError) onError(new Error('Google SDK not loaded'));
@@ -72,6 +72,7 @@ class AuthManager {
         callback: async (response) => {
           if (response.code) {
             try {
+              if (onCodeReceived) onCodeReceived();
               // GIS popup mode requires "postmessage" as the redirect_uri
               // for the server-side token exchange with Google
               await this.loginWithGoogleCode(response.code, 'postmessage');
