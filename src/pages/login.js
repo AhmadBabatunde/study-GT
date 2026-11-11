@@ -145,7 +145,7 @@ export async function renderLoginPage(appEl, { navigate }) {
       <span>Authenticating...</span>
     `;
     try {
-      await auth.loginWithDemo('Ahmad Bello', 'ahmad.bello@studygt.ng');
+      await auth.loginWithDemo('Babatunde', 'babatunde@studygt.ng');
       navigate('/dashboard');
     } catch (err) {
       showError(err.message || 'Demo authentication failed.');
