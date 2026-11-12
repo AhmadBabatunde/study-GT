@@ -1,5 +1,3 @@
-import { getFullImageUrl } from '../api.js';
-
 const providerLogoFiles = new Map([
   ['access bank', 'access-bank.png'],
   ['access', 'access-bank.png'],
@@ -16,6 +14,7 @@ const providerLogoFiles = new Map([
   ['nnpc', 'nnpc.png'],
   ['pwc', 'pwc.png'],
   ['workforce', 'workforce.png'],
+  ['zenith bank', 'zenith-bank.png'],
 ]);
 
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -35,7 +34,7 @@ export function getProviderLogoMarkup(name) {
     </span>
   `;
   const logo = file
-    ? `<img class="provider-logo-image h-full w-full rounded-full object-contain p-0.5" src="${getFullImageUrl(`/api/images/provider-logos/${file}`)}" alt="${escapeHtml(name)} logo" loading="eager" />`
+    ? `<img class="provider-logo-image h-full w-full rounded-full object-contain p-0.5" src="/provider-logos/${file}" alt="${escapeHtml(name)} logo" loading="eager" />`
     : fallback;
 
   return `
