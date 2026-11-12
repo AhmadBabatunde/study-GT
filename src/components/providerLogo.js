@@ -2,9 +2,19 @@ import { getFullImageUrl } from '../api.js';
 
 const providerLogoFiles = new Map([
   ['access bank', 'access-bank.png'],
+  ['access', 'access-bank.png'],
   ['cat', 'cat.png'],
   ['cat6', 'cat.png'],
+  ['deloitte', 'deloitte.jpg'],
+  ['diamond bank', 'diamond-bank.png'],
   ['dragnet', 'dragnet.png'],
+  ['first bank', 'first-bank.png'],
+  ['gt bank', 'gt-bank.png'],
+  ['gtbank', 'gt-bank.png'],
+  ['gtco', 'gt-bank.png'],
+  ['kpmg', 'kpmg.png'],
+  ['nnpc', 'nnpc.png'],
+  ['pwc', 'pwc.png'],
   ['workforce', 'workforce.png'],
 ]);
 
